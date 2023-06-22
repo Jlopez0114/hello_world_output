@@ -1,20 +1,18 @@
 version: 2.1
-
-commands: 
-  print_pipeline_id:
-    description: "prints the Circle CI Workflow ID from its environment variable"
-    steps:
-      - run: echo ${CIRCLE_WORKFLOW_ID}
+      
 jobs:
-  print_ID:
+  error_job:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - print_pipeline_id
+      - run: exit 1
+      - run:
+        name: error fix
+        command: echo "hello error"
+        when: on_fail
+        
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   my_workflow:
     jobs:
-      - print_ID
+      - error_job
